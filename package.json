@@ -1,0 +1,29 @@
+{
+  "name": "tasktxt",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^8.17.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@vitest/ui": "^0.23.1",
+    "imba": "^2.0.0-alpha.223",
+    "jsdom": "^20.0.0",
+    "vite": "^3.1.0",
+    "vite-plugin-imba": "latest",
+    "vitest": "^0.23.1",
+    "vitest-github-actions-reporter-temp": "^0.8.3"
+  },
+  "repository": "rutabadev/tasktxt",
+  "description": "A copy of tasktxt by wedeserveless",
+  "homepage": "https://github.com/rutabadev/tasktxt",
+  "author": "Author Name (https://github.com/rutabadev)",
+  "license": "ISC"
+}
