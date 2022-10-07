@@ -1,35 +1,38 @@
-import './app.css'
-import Counter from './components/counter.imba'
-import logo from "./assets/imba.svg"
+import "./reset.imba"
+import "./components/mirrored-textarea.imba"
 
 global css
 	@root
-		fs:16px lh:24px fw:400 c:white/87
+		fs:16px lh:24px fw:400 c:gray4
 		color-scheme: light dark
 		bgc:#242424
 		
+css
+	textarea, mirrored-textarea
+		ga:stack
+		border:none resize:none
+		px:12 py:6
+		ff:monospace
+		fw:500 fs:2xl
+		word-break:break-word
+		overflow-wrap:break-word
+		ws:pre-wrap
+
+	textarea
+		bg:transparent c:transparent caret-color:gray2
+		@focus outline:none
+
 tag app
-	css .logo h:6em p:1.5em
-	<self>
-		<div>
-			<a href="https://imba.io" target="_blank">
-				# use svg as an svg tag
-				<svg.logo[h:6.5em] src=logo>
+	tasksTxt = "My first task 5d 8m / 4h 2m [2020-12-12 10:00:00]"
 
-			<a href="https://vitejs.dev" target="_blank">
-				<img.logo[filter@hover:drop-shadow(0 0 4em #646cffaa)] src="/vite.svg" alt="Vite Logo">
+	<self[min-height:100vh d:flex]>
+		<div[w:30 bgc:gray7 ta:center py:4]> "sidebar"
+		<div[flex:1 d:vflex bd:2px solid gray9]>
+			<div[h:15 bgc:gray8 bdb:2px solid gray9 d:flex ai:center px:4]> "header"
+			<main[flex:1 d:grid gta:"stack" bgc:gray8]>
+				<mirrored-textarea tasksTxt=tasksTxt>
+				<textarea bind=tasksTxt>
 
-			<a href="https://imba.io" target="_blank">
-				# use svg as an image
-				<img.logo[filter@hover:drop-shadow(0 0 4em #ff3e00aa) h:6.5em transform:rotateY(180deg)] src="./assets/imba.svg" alt="Imba Logo">
-
-		<h1[c:yellow4]> "Vite + Imba"
-		<div.card> 
-			<Counter>
-		<p> "Check out"
-			<a href="https://imba.io" target="_blank"> " Imba.io"
-			", the Imba documentation website"
-		<p[c:#888]> "Click on the Vite and Imba logos to learn more!!!"
 
 
 imba.mount <app>, document.getElementById "app"
