@@ -1,12 +1,20 @@
+const durationMatcher = '(?<duration>((\\d+(?:d|h|m|s)) ?)+(\\s*))'
+const workedTimeMatcher = '(?<workedTime>((\\s*)(\\d+(?:d|h|m|s)) ?)+)(\\s*)'
+const startTimeMatcher = '(?<startTime>\\[.*\\](\\s*))'
+
 tag mirrored-textarea
 	prop tasksTxt = ""
 	def parseTaskTxt(taskTxt) do 
-		const match = taskTxt.match(/(?<duration>((\d+(?:d|h|m|s)) ?)+)?((?<postDurationGap>\s*)\/(?<preWorkedTimeGap>\s*)(?<workedTime>((\d+(?:d|h|m|s)) ?)+))?(?<postWorkedTimeGap>\s*)(?<startTime>\[.*\])?$/)
+		const regex = new RegExp(durationMatcher + '/' + workedTimeMatcher + startTimeMatcher + '$')
+		const match = taskTxt.match(regex)
+		if !match then return { value: taskTxt }
 		for own key, value of match.groups
 			if value === undefined then match.groups[key] = ""
-		let { duration, postDurationGap, preWorkedTimeGap, workedTime, postWorkedTimeGap, startTime } = match..groups
-		const value = if ([duration, workedTime, startTime].some(Boolean)) then taskTxt.replace(match[0], "") else taskTxt
-		{ value, duration, postDurationGap, preWorkedTimeGap, workedTime, postWorkedTimeGap, startTime }
+		let { duration, workedTime, startTime } = match..groups
+		const noMissingPart = [duration, workedTime, startTime].some(Boolean) 
+		console.log("value match", `'{match[0]}'`)
+		const value = if (noMissingPart) then taskTxt.replace(match[0], "") else taskTxt
+		{ value, duration, workedTime, startTime }
 
 	def computeTasks(tasksTxt)
 		const tasks = tasksTxt.split(/\n/);
@@ -19,7 +27,7 @@ tag mirrored-textarea
 		computedTasks = computeTasks(tasksTxt);
 		<self> for computedTask in computedTasks
 			<span> computedTask.value
-			<span[c:orange6]> computedTask.duration + computedTask.postDurationGap
-			<span[c:gray6]> "/{computedTask.preWorkedTimeGap}{computedTask.workedTime}{computedTask.postWorkedTimeGap}" if computedTask.workedTime
+			<span[c:orange6]> computedTask.duration
+			<span[c:gray6]> "/" + computedTask.workedTime if computedTask.workedTime
 			<span[c:teal7]> "{computedTask.startTime}" if computedTask.startTime
 			<br>
